@@ -52,16 +52,6 @@ variable "protocol_name" {
   default = "tcp"
 }
 
-variable "name_grafana" {
-  type        = string
-  default     = "grafana"
-}
-
-variable "name_prometheus" {
-  type        = string
-  default     = "prometheus"
-}
-
 variable "machine_type" {
   description = "GCP VM instance machine type."
   type        = string
@@ -72,11 +62,6 @@ variable "image" {
   description = "GCP VM instance image."
   type        = string
   default     = "ubuntu-os-cloud/ubuntu-1804-lts"
-}
-
-variable "name_instance" {
-  type        = string
-  default     = "docker-app"
 }
 
 variable "docker_username" {

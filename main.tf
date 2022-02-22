@@ -16,6 +16,12 @@ resource "random_id" "login"{
 }
 
 
+resource "random_integer" "random" {
+  min   = 1
+  max   = 2000
+}
+
+
 module "network" {
   source       = "./modules/network"
   network_name = var.network_name
@@ -30,7 +36,6 @@ module "firewall"{
   firewall_name  = var.firewall_name
   network_name   = var.network_name
   project_name   = var.project_id
-  source_ranges  = var.ip_range
   firewall_ports = var.firewall_ports
   protocol_name  = var.protocol_name
   depends_on     = [module.network]
@@ -47,7 +52,7 @@ data "template_file" "script-prometheus" {
 
 resource "google_compute_instance" "prometheus" {
   zone         = var.zone
-  name         = var.name_prometheus
+  name         = "prometheus-${random_integer.random.result}"
   machine_type = var.machine_type
 
   metadata_startup_script = data.template_file.script-prometheus.rendered
@@ -81,7 +86,7 @@ data "template_file" "script-grafana" {
 
 resource "google_compute_instance" "grafana" {
   zone         = var.zone
-  name         = var.name_grafana
+  name         = "grafana-${random_integer.random.result}"
   machine_type = var.machine_type
 
   metadata_startup_script = data.template_file.script-grafana.rendered
@@ -115,7 +120,7 @@ data "template_file" "script-instance" {
 
 resource "google_compute_instance" "instance" {
   zone         = var.zone
-  name         = var.name_instance
+  name         = "docker-app-${random_integer.random.result}"
   machine_type = var.machine_type_custom
 
   metadata_startup_script = data.template_file.script-instance.rendered

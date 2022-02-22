@@ -6,7 +6,7 @@ resource "google_compute_network" "monitoring-network" {
 
 resource "google_compute_subnetwork" "monitoring-subnet" {
   name          = var.subnet_name
-  ip_cidr_range = "10.0.2.0/24"
+  ip_cidr_range = var.ip_cidr_range
   region        = var.region_net
   project       = var.project_id
   network       = google_compute_network.monitoring-network.name
